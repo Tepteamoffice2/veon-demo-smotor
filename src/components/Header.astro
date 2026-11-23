@@ -1,0 +1,139 @@
+---
+import Logo from "./Logo.astro";
+import Icon from "./Icon.astro";
+import FutureLink from "./FutureLink.astro";
+import StationButton from "./StationButton.astro";
+import { stations } from "../data/smotor";
+
+const anchors = [
+  { href: "#poslugy", label: "Послуги та ціни" },
+  { href: "#perevagy", label: "Чому SMOTOR" },
+  { href: "#pokupka", label: "Перевірка перед купівлею" },
+  { href: "#kontakty", label: "Контакти" },
+];
+---
+<header class="site-header" data-rec="U-R001,U-R010">
+  <div class="container site-header__bar">
+    <Logo />
+
+    <nav class="site-nav" aria-label="Розділи сторінки">
+      <ul class="site-nav__list">
+        {anchors.map((a) => <li><a class="site-nav__link" href={a.href}>{a.label}</a></li>)}
+        <li class="site-nav__wide"><FutureLink class="site-nav__link">Автопродаж</FutureLink></li>
+        <li class="site-nav__wide"><FutureLink class="site-nav__link" align="end">Марки</FutureLink></li>
+      </ul>
+    </nav>
+
+    <ul class="header-phones" aria-label="Телефони СТО" data-rec="U-R008">
+      {stations.map((s) => (
+        <li>
+          <a class="header-phone" href={`tel:${s.phone}`} data-event="call" data-station={s.id}>
+            <span class="header-phone__place">{s.city}</span>
+            <span class="header-phone__num">{s.phoneText}</span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <a class="btn btn--brand header-cta" href="#kontakty">Записатися</a>
+
+    <div class="header-compact">
+      <details class="dd" data-dd>
+        <summary class="btn btn--brand dd__toggle"><Icon name="phone" class="dd__icon" /><span>Подзвонити</span></summary>
+        <div class="dd__panel">
+          <p class="dd__title">Оберіть СТО</p>
+          <ul class="dd__list">
+            {stations.map((s) => <li><StationButton station={s} tone="brand" /></li>)}
+          </ul>
+        </div>
+      </details>
+
+      <details class="menu" data-dd>
+        <summary class="btn btn--line menu__toggle"><span class="menu__open">Меню</span><span class="menu__close">Закрити</span></summary>
+        <div class="menu__sheet band--ink">
+          <nav aria-label="Меню">
+            <ul class="menu__list">
+              {anchors.map((a) => <li><a class="menu__link" href={a.href} data-close>{a.label}</a></li>)}
+            </ul>
+            <ul class="menu__future">
+              <li><FutureLink align="start">Автопродаж</FutureLink></li>
+              <li><FutureLink align="start">Марки</FutureLink></li>
+              <li><FutureLink align="start">Версія російською</FutureLink></li>
+            </ul>
+          </nav>
+          <ul class="menu__phones">
+            {stations.map((s) => <li><StationButton station={s} tone="action" /></li>)}
+          </ul>
+        </div>
+      </details>
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header { position: sticky; top: 0; z-index: var(--z-nav); background: var(--color-paper); color: var(--color-ink); --focus: var(--color-brand); border-bottom: 1px solid var(--color-rule); }
+  .site-header__bar { display: flex; align-items: center; gap: var(--space-md); height: var(--header-h); }
+  .site-nav, .header-phones, .header-cta { display: none; }
+
+  /* Phone and tablet: Подзвонити + Меню, both labelled */
+  .header-compact { display: flex; align-items: center; gap: var(--space-xs); margin-left: auto; }
+  .dd, .menu { position: static; }
+  .dd > summary, .menu > summary { list-style: none; }
+  .dd > summary::-webkit-details-marker, .menu > summary::-webkit-details-marker { display: none; }
+  .dd__toggle, .menu__toggle { min-height: 2.75rem; padding: 0 var(--space-md); }
+  .dd__toggle :global(.dd__icon) { width: 1.25rem; height: 1.25rem; }
+  .menu__close { display: none; }
+  .menu[open] .menu__open { display: none; }
+  .menu[open] .menu__close { display: inline; }
+
+  .dd__panel { position: absolute; top: calc(var(--header-h) - var(--space-xs)); right: var(--gutter); width: min(21rem, 100% - 2 * var(--gutter)); padding: var(--space-md); background: var(--color-paper); border: 1px solid var(--color-rule); border-radius: var(--radius); box-shadow: 0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent); z-index: var(--z-dropdown); }
+  .dd__title { font-size: var(--text-sm); color: var(--color-muted); margin-bottom: var(--space-sm); }
+  .dd__list { display: grid; gap: var(--space-xs); }
+  .dd[open] .dd__panel { animation: drop-in var(--dur-short) var(--ease-out); }
+
+  .menu__sheet { position: fixed; inset: var(--header-h) 0 0 0; overflow-y: auto; padding: var(--space-xl) var(--gutter) calc(var(--space-xl) + env(safe-area-inset-bottom)); display: flex; flex-direction: column; gap: var(--space-xl); }
+  .menu[open] .menu__sheet { animation: sheet-in var(--dur-short) var(--ease-out); }
+  .menu__list { display: grid; gap: var(--space-2xs); }
+  .menu__link { display: flex; align-items: center; min-height: 3.25rem; white-space: nowrap; font: 800 var(--text-lead)/1.1 var(--font-display); letter-spacing: -0.02em; color: var(--color-paper); text-decoration: none; }
+  .menu__link:hover { color: var(--color-action); }
+  .menu__future { display: flex; flex-wrap: wrap; gap: var(--space-sm) var(--space-lg); margin-top: var(--space-lg); color: var(--color-muted-on-ink); }
+  .menu__future li { min-height: 2.75rem; display: flex; align-items: center; }
+  .menu__phones { display: grid; gap: var(--space-xs); margin-top: auto; }
+
+  @keyframes drop-in { from { opacity: 0; transform: translateY(-4px); } }
+  @keyframes sheet-in { from { opacity: 0; transform: translateY(-8px); } }
+
+  @media (max-width: 29.99rem) {
+    .site-header__bar { gap: var(--space-xs); }
+    .dd__toggle, .menu__toggle { padding: 0 var(--space-sm); gap: var(--space-2xs); }
+    .site-header :global(.logo) { width: 5.5rem; height: 2.5rem; }
+    .site-header :global(.logo__word) { font-size: 0.9375rem; }
+  }
+  @media (min-width: 30rem) {
+    .menu__link { font-size: var(--text-section); }
+  }
+  @media (max-width: 23.4rem) {
+    .dd__toggle, .menu__toggle { font-size: var(--text-sm); }
+    .dd__toggle :global(.dd__icon) { display: none; }
+    .site-header :global(.logo) { width: 5rem; }
+  }
+
+  /* Desktop: anchors, two labelled phones, Записатися */
+  @media (min-width: 75rem) {
+    .header-compact { display: none; }
+    .site-nav { display: block; margin-left: var(--space-lg); }
+    .site-nav__list { display: flex; align-items: center; gap: var(--space-xs) var(--space-lg); }
+    .site-nav__wide { display: none; }
+    :global(.site-nav__link) { display: inline-flex; align-items: center; min-height: 2.75rem; font-size: var(--text-sm); color: var(--color-ink); text-decoration: none; white-space: nowrap; transition: color var(--dur-press) var(--ease-out); }
+    a.site-nav__link:hover { color: var(--color-brand); text-decoration: underline; text-underline-offset: 0.3em; }
+    :global(.future-link.site-nav__link) { color: var(--color-muted); }
+    .header-phones { display: flex; gap: var(--space-lg); margin-left: auto; }
+    .header-phone { display: grid; line-height: 1.2; text-decoration: none; color: var(--color-ink); padding-block: var(--space-2xs); }
+    .header-phone__place { font-size: var(--text-sm); color: var(--color-muted); }
+    .header-phone__num { font-size: var(--text-sm); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .header-phone:hover .header-phone__num { color: var(--color-brand); text-decoration: underline; text-underline-offset: 0.2em; }
+    .header-cta { display: inline-flex; min-height: 2.75rem; padding: 0 var(--space-lg); font-size: var(--text-sm); }
+  }
+  @media (min-width: 90rem) {
+    .site-nav__wide { display: list-item; }
+  }
+</style>

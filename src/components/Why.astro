@@ -1,0 +1,56 @@
+---
+// Proof in the category's own form: the guarantee first (B-F014, B-F022), then the client's own claims (B-F015, W-F003), partners (W-F007).
+const claims = [
+  { title: "Тільки п'ять марок", line: "Спеціалізований сервіс: вузький профіль, корейські та японські авто." },
+  { title: "На 45% вигідніше, ніж у дилера", line: "За даними SMOTOR." },
+  { title: "15 000 запчастин в наявності", line: "За даними SMOTOR." },
+  { title: "Високотехнологічне обладнання нового покоління", line: "" },
+];
+---
+<section id="perevagy" class="band band--ink why" aria-labelledby="perevagy-title" data-rec="U-R005,U-R011">
+  <div class="container why__grid">
+    <h2 id="perevagy-title" class="why__title">Чому SMOTOR</h2>
+
+    <div class="why__promise" data-reveal>
+      <p class="why__numeral" aria-hidden="true">12</p>
+      <p class="why__promise-text"><span class="visually-hidden">12 </span>місяців гарантії на роботи</p>
+      <p class="why__promise-note">На запчастини діє гарантія виробника.</p>
+    </div>
+
+    <div class="why__body">
+      <ul class="why__claims">
+        {claims.map((c) => (
+          <li class="why__claim">
+            <h3 class="why__claim-title">{c.title}</h3>
+            {c.line && <p class="why__claim-line">{c.line}</p>}
+          </li>
+        ))}
+      </ul>
+      <p class="why__partners"><span class="why__partners-label">Сертифікати та партнери:</span> AD Автотехнікс, дилер DynaPower, KYB, Gazer Authorized Partner.</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .why__grid { display: grid; gap: var(--space-xl); }
+  .why__promise { display: grid; gap: var(--space-xs); }
+  .why__numeral { font: 800 var(--text-numeral)/0.8 var(--font-display); letter-spacing: -0.04em; color: var(--color-promise); font-variant-numeric: tabular-nums; }
+  .why__promise-text { font: 800 var(--text-section)/1.1 var(--font-display); letter-spacing: -0.02em; color: var(--color-promise); max-width: 14ch; margin-top: var(--space-sm); }
+  .why__promise-note { color: var(--color-muted-on-ink); max-width: 30ch; }
+
+  .why__claims { display: grid; }
+  .why__claim { display: grid; gap: var(--space-2xs); padding-block: var(--space-lg); border-top: 1px solid var(--color-rule-dark); }
+  .why__claim:last-child { border-bottom: 1px solid var(--color-rule-dark); }
+  .why__claim-title { font-size: var(--text-lead); color: var(--color-paper); }
+  .why__claim-line { color: var(--color-muted-on-ink); max-width: 48ch; }
+  .why__partners { margin-top: var(--space-lg); color: var(--color-muted-on-ink); font-size: var(--text-sm); max-width: 60ch; }
+  .why__partners-label { color: var(--color-paper); font-weight: 600; }
+
+  @media (min-width: 64rem) {
+    .why__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); grid-template-areas: "promise promise promise promise promise . head head head head head head" "promise promise promise promise promise . body body body body body body"; column-gap: var(--gap-columns); row-gap: var(--space-xl); align-items: start; }
+    .why__title { grid-area: head; }
+    .why__promise { grid-area: promise; align-self: stretch; align-content: start; }
+    .why__body { grid-area: body; }
+    .why__claim { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: var(--gap-columns); align-items: baseline; }
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+import Base from "../layouts/Base.astro";
+import Header from "../components/Header.astro";
+import Hero from "../components/Hero.astro";
+import Services from "../components/Services.astro";
+import Why from "../components/Why.astro";
+import Purchase from "../components/Purchase.astro";
+import Contacts from "../components/Contacts.astro";
+import Footer from "../components/Footer.astro";
+import CallBar from "../components/CallBar.astro";
+import { stations, socials, email } from "../data/smotor";
+
+// title / description: design/concept.md 8.4
+const title = "СТО Kia, Hyundai, Toyota, Lexus у Києві та Вишневому | SMOTOR";
+const description = "Ремонт і ТО Kia, Hyundai, SsangYong, Toyota, Lexus: ціни від 500 грн, гарантія 12 місяців на роботи. СТО на Сирецькій, 33 Х і у Вишневому.";
+
+const plain = (s: string) => s.replace(/\u00A0/g, " ");
+const hoursSpec = [
+  { "@type": "OpeningHoursSpecification", dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], opens: "09:00", closes: "20:00" },
+  { "@type": "OpeningHoursSpecification", dayOfWeek: "Saturday", opens: "09:00", closes: "18:00" },
+];
+const org = { "@type": "Organization", "@id": "#organization", name: "SMOTOR", email, sameAs: socials.map((s) => s.url) };
+const ld = {
+  "@context": "https://schema.org",
+  "@graph": [
+    org,
+    ...stations.map((s) => ({
+      "@type": "AutoRepair",
+      "@id": `#sto-${s.id}`,
+      name: s.schemaName,
+      telephone: s.phone,
+      email,
+      parentOrganization: { "@id": "#organization" },
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: plain(`вул. ${s.street}`),
+        addressLocality: s.city,
+        addressRegion: s.id === "kyiv" ? "Київ" : "Київська область",
+        addressCountry: "UA",
+      },
+      openingHoursSpecification: hoursSpec,
+    })),
+  ],
+};
+---
+<Base lang="uk" title={title} description={description}>
+  <script type="application/ld+json" slot="head" set:html={JSON.stringify(ld)} />
+  <Header slot="header" />
+  <Hero />
+  <Services />
+  <Why />
+  <Purchase />
+  <Contacts />
+  <Footer slot="footer" />
+  <CallBar slot="after" />
+</Base>
+<script src="../scripts/header.ts"></script>
+<script src="../scripts/page.ts"></script>

@@ -1,0 +1,69 @@
+/* SMOTOR page system: bands, headings, buttons, links, future links. Every value comes from tokens.css. */
+
+/* Bands: each block owns its paper; the focus ring follows the paper (brand on light, action on dark) */
+.band { padding-block: var(--section-pad); }
+.band--paper { background: var(--color-paper); color: var(--color-ink); --focus: var(--color-brand); }
+.band--surface { background: var(--color-surface); color: var(--color-ink); --focus: var(--color-brand); }
+.band--brand { background: var(--color-brand); color: var(--color-paper); --focus: var(--color-action); }
+.band--ink { background: var(--color-ink); color: var(--color-paper); --focus: var(--color-action); }
+
+/* Browser surfaces */
+::selection { background: var(--color-action); color: var(--color-ink); }
+html { scrollbar-color: var(--color-brand) var(--color-surface); }
+
+/* Type */
+h1, h2, h3 { margin: 0; font-family: var(--font-display); font-weight: 800; line-height: var(--lh-head); letter-spacing: -0.02em; }
+h2 { font-size: var(--text-section); max-width: 24ch; }
+h3 { font-size: var(--text-lead); max-width: 40ch; }
+p, ul, ol, dl, dd { margin: 0; }
+ul, ol { padding: 0; list-style: none; }
+.lead { font-size: var(--text-lead); line-height: 1.4; max-width: 44ch; }
+.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.nowrap { white-space: nowrap; }
+
+/* Text links */
+.link { color: inherit; text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 0.22em; transition: text-decoration-color var(--dur-press) var(--ease-out), color var(--dur-press) var(--ease-out); }
+.link:hover { text-decoration-thickness: 2px; }
+.link--brand { color: var(--color-brand); }
+.link--brand:hover { color: var(--color-brand-hover); }
+
+/* Buttons: one filled primary per context, all states */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: var(--space-xs); min-height: 3rem; padding: 0 var(--space-lg); border: 2px solid transparent; border-radius: var(--radius); font: 600 var(--text-md)/1.15 var(--font-body); text-decoration: none; white-space: nowrap; cursor: pointer; -webkit-tap-highlight-color: transparent; transition: background-color var(--dur-press) var(--ease-out), border-color var(--dur-press) var(--ease-out), color var(--dur-press) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.btn:active { transform: scale(0.98); }
+.btn svg { width: 1.25rem; height: 1.25rem; flex-shrink: 0; transition: transform var(--dur-press) var(--ease-out); }
+.btn:hover svg { transform: translateX(2px); }
+.btn--brand { background: var(--color-brand); color: var(--color-paper); }
+.btn--brand:hover { background: var(--color-brand-hover); }
+.btn--action { background: var(--color-action); color: var(--color-ink); }
+.btn--action:hover { background: var(--color-action-hover); }
+.btn--line { background: transparent; color: inherit; border-color: currentColor; }
+.btn--line:hover { background: color-mix(in srgb, currentColor 12%, transparent); }
+.btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+/* Station call button: the place first, the number large, one tap */
+.station-btn { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; column-gap: var(--space-md); min-height: var(--tap); padding: var(--space-xs) var(--space-md); border-radius: var(--radius); text-decoration: none; -webkit-tap-highlight-color: transparent; transition: background-color var(--dur-press) var(--ease-out), transform var(--dur-micro) var(--ease-out); }
+.station-btn:active { transform: scale(0.98); }
+.station-btn__place { font-size: var(--text-sm); line-height: 1.25; font-weight: 400; }
+.station-btn__phone { display: block; font: 800 var(--text-lead)/1.1 var(--font-display); font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: -0.01em; }
+.station-btn svg { grid-column: 2; grid-row: 1 / span 2; width: 1.5rem; height: 1.5rem; transition: transform var(--dur-press) var(--ease-out); }
+.station-btn:hover svg { transform: translateX(2px); }
+.station-btn--action { background: var(--color-action); color: var(--color-ink); }
+.station-btn--action:hover { background: var(--color-action-hover); }
+.station-btn--brand { background: var(--color-brand); color: var(--color-paper); }
+.station-btn--brand:hover { background: var(--color-brand-hover); }
+
+/* FutureLink: a page of the full site, shown quiet, with a note on hover, focus and tap */
+.future-link { color: inherit; text-decoration: underline dotted; text-decoration-thickness: 1px; text-underline-offset: 0.25em; cursor: help; border-radius: var(--radius); }
+.future-link__note[aria-hidden="true"] { background: var(--color-ink); color: var(--color-paper); font: 400 var(--text-sm)/1.2 var(--font-body); padding: var(--space-xs) var(--space-sm); text-decoration: none; z-index: var(--z-dropdown); }
+.future-link:hover .future-link__note { transition-delay: 300ms; }
+.future-link:focus .future-link__note { opacity: 1; transform: translate(-50%, 0); transition-delay: 0ms; }
+.future-link--start .future-link__note[aria-hidden="true"] { left: 0; transform: translate(0, -4px); }
+.future-link--start:hover .future-link__note, .future-link--start:focus .future-link__note { transform: translate(0, 0); }
+.future-link--end .future-link__note[aria-hidden="true"] { left: auto; right: 0; transform: translate(0, -4px); }
+.future-link--end:hover .future-link__note, .future-link--end:focus .future-link__note { transform: translate(0, 0); }
+.band--ink .future-link__note[aria-hidden="true"], .band--brand .future-link__note[aria-hidden="true"] { background: var(--color-paper); color: var(--color-ink); }
+
+/* Room for the phone call bar under 48rem, reserved up front so nothing shifts when it slides in */
+@media (max-width: 47.99rem) {
+  body { padding-bottom: calc(var(--callbar-h) + env(safe-area-inset-bottom)); }
+}

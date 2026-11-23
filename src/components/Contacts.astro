@@ -1,0 +1,158 @@
+---
+import Icon from "./Icon.astro";
+import FutureLink from "./FutureLink.astro";
+import StationButton from "./StationButton.astro";
+import { stations, telegram, email, qualityEmail, hours, marques, serviceGroups } from "../data/smotor";
+// Final block: B-F004 addresses, W-F002 + B-F011 hours, B-F016 parking, W-F001 e-mails, B-F009 Telegram.
+// The booking form is shown only: no endpoint in the demo, the button is inactive and the real call sits beside it (demo.md §6).
+---
+<section id="kontakty" class="band band--brand contacts" aria-labelledby="kontakty-title" data-rec="U-R008,U-R009,U-R010">
+  <div class="container">
+    <h2 id="kontakty-title" class="contacts__title">Дві СТО: Київ і Вишневе</h2>
+
+    <div class="contacts__stations">
+      {stations.map((s, i) => (
+        <article class="station" aria-labelledby={`st-${s.id}`} data-reveal style={`--reveal-delay:${i * 90}ms`}>
+          <h3 id={`st-${s.id}`} class="station__street">{s.street}</h3>
+          <p class="station__city">{s.address}</p>
+          <ul class="station__hours">
+            <li>{hours.weekdays}</li>
+            <li>{hours.saturday}</li>
+            <li>{hours.sunday}</li>
+          </ul>
+          <div class="station__actions">
+            <StationButton station={s} tone="action" class="station__call" />
+            <a class="btn btn--line station__viber" href={s.viber} data-event="viber" data-station={s.id}>Viber {s.city}</a>
+            <a class="btn btn--line station__route" href={s.route} target="_blank" rel="noopener" data-event="route" data-station={s.id}><Icon name="route" />Прокласти маршрут</a>
+          </div>
+          <p class="station__viber-num">Viber: <span class="num">{s.phoneText}</span></p>
+          <p class="station__page"><FutureLink align="start">Сторінка СТО {s.cityIn}</FutureLink></p>
+        </article>
+      ))}
+    </div>
+
+    <div class="contacts__bottom">
+      <div class="contacts__common">
+        <p class="contacts__parking">Автосервіс з парковкою.</p>
+        <ul class="contacts__channels">
+          <li><span class="contacts__label">Telegram</span> <a class="link" href={telegram} target="_blank" rel="noopener" data-event="telegram">t.me/smotor_sto</a></li>
+          <li><span class="contacts__label">E-mail</span> <a class="link" href={`mailto:${email}`} data-event="email">{email}</a></li>
+          <li><span class="contacts__label">Відділ якості</span> <a class="link" href={`mailto:${qualityEmail}`} data-event="email">{qualityEmail}</a></li>
+        </ul>
+      </div>
+
+      <div class="booking" role="group" aria-labelledby="booking-title">
+        <h3 id="booking-title" class="booking__title">Запис на сервіс</h3>
+        <div class="booking__fields">
+          <div class="field">
+            <label for="b-name">Ім'я</label>
+            <input id="b-name" name="name" type="text" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="b-phone">Телефон</label>
+            <input id="b-phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0XX XXX XX XX" />
+          </div>
+          <div class="field">
+            <label for="b-brand">Марка авто</label>
+            <select id="b-brand" name="brand">
+              <option value="">Оберіть марку</option>
+              {marques.map((m) => <option>{m}</option>)}
+              <option>Інша</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="b-service">Послуга</label>
+            <select id="b-service" name="service">
+              <option value="">Оберіть послугу</option>
+              {serviceGroups.map((g) => <optgroup label={g.title}>{g.items.map((s) => <option>{s.name}</option>)}</optgroup>)}
+            </select>
+          </div>
+          <fieldset class="field field--seg">
+            <legend>СТО</legend>
+            <div class="seg">
+              {stations.map((s, i) => (
+                <>
+                  <input type="radio" name="station" id={`b-st-${s.id}`} value={s.id} checked={i === 0} />
+                  <label for={`b-st-${s.id}`}>{s.city}</label>
+                </>
+              ))}
+            </div>
+          </fieldset>
+        </div>
+        <div class="booking__submit">
+          <span class="btn btn--brand booking__btn" role="button" aria-disabled="true" tabindex="0" aria-describedby="booking-note">Записатися</span>
+          <p id="booking-note" class="booking__note">Онлайн-заявка з'явиться в повній версії сайту.</p>
+        </div>
+        <div class="booking__now">
+          <p class="booking__now-title">Записатися зараз телефоном:</p>
+          <ul class="booking__now-list">
+            {stations.map((s) => <li><StationButton station={s} tone="brand" /></li>)}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .contacts__title { margin-bottom: var(--space-xl); }
+  .contacts__stations { display: grid; gap: var(--space-2xl); }
+  .station { display: grid; gap: var(--space-sm); align-content: start; padding-top: var(--space-lg); border-top: 1px solid var(--color-rule-brand); }
+  .station__street { font-size: var(--text-xl); line-height: 0.95; letter-spacing: -0.03em; max-width: none; }
+  .station__city { font-weight: 600; }
+  .station__hours { color: var(--color-muted-on-brand); }
+  .station__actions { display: grid; gap: var(--space-xs); margin-top: var(--space-sm); }
+  .station__actions .btn { min-height: 3rem; color: var(--color-paper); }
+  .station__actions .btn--line:hover { background: color-mix(in srgb, var(--color-paper) 12%, transparent); }
+  .station__route :global(svg) { width: 1.25rem; height: 1.25rem; }
+  .station__viber-num { font-size: var(--text-sm); color: var(--color-muted-on-brand); }
+  .station__page { font-size: var(--text-sm); color: var(--color-muted-on-brand); }
+
+  .contacts__bottom { display: grid; gap: var(--space-2xl); margin-top: var(--space-2xl); padding-top: var(--space-xl); border-top: 1px solid var(--color-rule-brand); }
+  .contacts__common { display: grid; gap: var(--space-md); align-content: start; }
+  .contacts__parking { font-weight: 600; }
+  .contacts__channels { display: grid; gap: var(--space-xs); }
+  .contacts__channels li { display: grid; }
+  .contacts__label { font-size: var(--text-sm); color: var(--color-muted-on-brand); }
+  .contacts__channels .link { display: inline-flex; align-items: center; min-height: 2.75rem; justify-self: start; overflow-wrap: anywhere; }
+  .contacts__channels .link:hover { color: var(--color-action); }
+
+  .booking { display: grid; gap: var(--space-lg); padding: var(--space-lg); background: var(--color-paper); color: var(--color-ink); border-radius: var(--radius); --focus: var(--color-brand); }
+  .booking__title { font-size: var(--text-lead); }
+  .booking__fields { display: grid; gap: var(--space-md); }
+  .field { display: grid; gap: var(--space-2xs); min-width: 0; margin: 0; padding: 0; border: 0; }
+  .field label, .field legend { font-size: var(--text-sm); font-weight: 600; padding: 0; }
+  .field input, .field select { width: 100%; min-height: 3rem; padding: 0 var(--space-sm); border: 1px solid var(--color-field-border); border-radius: var(--radius); background: var(--color-paper); color: var(--color-ink); font: 400 1rem/1.2 var(--font-body); outline: 2px solid transparent; outline-offset: -3px; }
+  .field input::placeholder { color: var(--color-muted); }
+  .field input:hover, .field select:hover { border-color: var(--color-ink); }
+  .field input:focus-visible, .field select:focus-visible { outline: 3px solid var(--color-brand); outline-offset: -1px; }
+  .seg { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: var(--space-2xs); }
+  .seg input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+  .seg label { display: flex; align-items: center; justify-content: center; min-height: 3rem; border: 1px solid var(--color-field-border); font-size: var(--text-md); font-weight: 400; cursor: pointer; transition: background-color var(--dur-press) var(--ease-out), color var(--dur-press) var(--ease-out); }
+  .seg label:first-of-type { border-radius: var(--radius) 0 0 var(--radius); }
+  .seg label:last-of-type { border-radius: 0 var(--radius) var(--radius) 0; border-left: 0; }
+  .seg label:hover { background: var(--color-surface); }
+  .seg input:checked + label { background: var(--color-ink); color: var(--color-paper); border-color: var(--color-ink); }
+  .seg input:focus-visible + label { outline: 3px solid var(--color-brand); outline-offset: 2px; }
+
+  .booking__submit { display: grid; gap: var(--space-xs); }
+  .booking__btn { justify-self: start; }
+  .booking__note { font-size: var(--text-sm); color: var(--color-muted); }
+  .booking__now { display: grid; gap: var(--space-xs); padding-top: var(--space-md); border-top: 1px solid var(--color-rule); }
+  .booking__now-title { font-weight: 600; }
+  .booking__now-list { display: grid; gap: var(--space-xs); }
+
+  @media (min-width: 48rem) {
+    .booking__fields { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .field--seg { grid-column: 1 / -1; }
+    .booking__now-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .station__actions { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .station__actions :global(.station__call) { grid-column: 1 / -1; }
+  }
+  @media (min-width: 64rem) {
+    .contacts__stations { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gap-columns); }
+    .contacts__bottom { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); }
+    .contacts__common { grid-column: 1 / span 4; }
+    .booking { grid-column: 6 / span 7; padding: var(--space-xl); }
+  }
+</style>

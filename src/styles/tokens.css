@@ -1,0 +1,91 @@
+/* Hallmark · shape: custom (marques column, price lists, promise, check, two addresses) · genre: editorial · theme: custom · job: book · idea: "Вузький профіль великим шрифтом: п'ять марок, ціни від і дві адреси SMOTOR, набрані крупно на фірмовому синьому полі" · vibe: "точний сервіс, фірмовий синій, великі імена"
+ * paper: #FFFFFF with brand field #2C529B and ink bands #0E1D3F · accent: #00C1F0 (action only), #FF783A (promise only) · display: Geologica · body: IBM Plex Sans · hero: the five marques set huge as the H1 column on the brand field, two equal station call buttons beside it · nav: white fixed edge-aligned bar, oval wordmark, anchors, two labelled phones, one action; phone: Подзвонити and Меню · footer: compact ink, two stations, future sections, socials · imagery: none (no usable client photos; type carries the page) · signature: your marque across the screen and your station's street in the same huge face at the close
+ * axes: dark/geometric-sans/chromatic-cyan · surface: absolute · posture: full-palette · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H5 E4 S4 R4 V4 · weakest: imagery, no client photographs available, so names, prices and the 12 carry every screen at graphic scale */
+/* Hallmark · waive 7b · --color-paper #FFFFFF on the paper bands, the header and type on brand/ink · design/concept.md 8.2 and the veon-concept colors fix pure white as the reading surface; the approved concept outranks Hallmark (docs/process/hallmark.md, priority 2) */
+/* Hallmark · answer F4 · cyan station call buttons are the one primary (call a station); brand-filled Записатися/Подзвонити in the white header and the brand buttons on the light band are the same action on light paper, where cyan fails contrast (concept п. 5) */
+/* Hallmark · waive 39b · a.station-btn 56 to 58px · concept.md 8.3/8.10 fixes the station call button at 56px (two lines: place and number, the one primary tap) */
+/* Hallmark · answer F25 · under 64rem the three price groups sit behind ТО / Діагностика / Ремонт tabs (concept.md п. 5, UX п. 7); every price is one tap away and in the DOM */
+/* Client design tokens from design/concept.md (veon-concept: colors, fonts; 8.2 scale and grid; 8.10 design system). */
+:root {
+  /* Colour roles (concept 8.10) */
+  --color-brand: #2C529B;          /* field of hero and contacts, prices and buttons on light */
+  --color-ink: #0E1D3F;            /* text, night bands, footer, call bar */
+  --color-action: #00C1F0;         /* press: call buttons on dark, focus on dark */
+  --color-promise: #FF783A;        /* the guarantee only, only on ink */
+  --color-paper: #FFFFFF;          /* reading surface */
+  --color-surface: #EEF2F8;        /* light band (pokupka) */
+  --color-muted: #4A5878;          /* secondary text on paper and surface */
+  --color-muted-on-brand: #C9D9F2; /* secondary text on brand */
+  --color-muted-on-ink: #B9C7E3;   /* secondary text on ink */
+  --color-field-border: #66789C;   /* input edges, 4.44:1 on paper */
+  --color-rule: #D5DCE8;           /* hairlines on paper */
+  --color-rule-dark: #2E4170;      /* hairlines on ink */
+  --color-rule-brand: #5677B5;     /* hairlines on brand */
+  --color-brand-hover: #234582;
+  --color-action-hover: #4DD4F5;
+
+  /* Base names used by demo-base global.css */
+  --color-bg: var(--color-paper);
+  --color-text: var(--color-ink);
+  --color-accent: var(--color-brand);
+  --focus: var(--color-brand);
+
+  /* Type: Geologica (display) + IBM Plex Sans (text); weights 400 / 600 / 800 */
+  --font-display: "Geologica", system-ui, sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --text-sm: 0.875rem;                                  /* 14 */
+  --text-md: clamp(1rem, 0.96rem + 0.18vw, 1.0625rem);  /* 16 → 17 */
+  --text-lead: clamp(1.25rem, 1.18rem + 0.3vw, 1.375rem); /* 20 → 22 */
+  --text-section: clamp(1.875rem, 1.5rem + 1.6vw, 2.5rem); /* 30 → 40 */
+  --text-xl: clamp(2.75rem, 2rem + 3.2vw, 4rem);        /* 44 → 64 */
+  /* Marques: 9.5vw + 1rem, held by the screen height so the column, the sentence and the call buttons fit the fold */
+  --text-marques: clamp(3.25rem, min(9.5vw + 1rem, 13.5svh), 8.5rem);
+  --text-numeral: clamp(7rem, 4rem + 13vw, 13rem);      /* the one graphic numeral: 12 */
+  --lh-body: 1.5;
+  --lh-head: 1.15;
+  --lh-marques: 0.92;
+
+  /* Space: 8-step rhythm */
+  --space-3xs: 0.125rem;
+  --space-2xs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2.5rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+  --section-pad: clamp(4.5rem, 3rem + 5.5vw, 8rem);     /* 72 → 128 */
+  --space: clamp(1.25rem, 5.5vw, 5rem);                 /* side fields 20 / 40 / 80 */
+  --gutter: var(--space);
+  --gap-columns: 1.5rem;
+  --container: 80rem;                                   /* 1280 */
+
+  /* Shape and layers */
+  --radius: 4px;
+  --header-h: 4rem;
+  --callbar-h: 4rem;
+  --tap: 3.5rem;                                        /* station buttons 56 */
+  --z-raised: 10;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-nav: 300;
+
+  /* Motion */
+  --ease-out: cubic-bezier(.2, .7, .2, 1);
+  --ease-in: cubic-bezier(.4, 0, 1, 1);
+  --ease-in-out: cubic-bezier(.6, 0, .3, 1);
+  --dur-micro: 120ms;
+  --dur-press: 150ms;
+  --dur-short: 220ms;
+  --dur-bar: 280ms;
+  --dur: 400ms;
+  --reveal-shift: 8px;
+}
+@media (min-width: 48rem) {
+  :root { --reveal-shift: 16px; }
+}
+@media (min-width: 75rem) {
+  :root { --header-h: 4.5rem; }
+}

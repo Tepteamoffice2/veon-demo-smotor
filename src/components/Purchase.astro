@@ -1,0 +1,56 @@
+---
+import FutureLink from "./FutureLink.astro";
+import StationButton from "./StationButton.astro";
+import { stations } from "../data/smotor";
+// Scenario S3: B-F013 (передпродажна діагностика, ендоскопія двигуна, комп'ютерна), B-F020 (діагностика при покупці від 1400), B-F017 (автопродаж).
+---
+<section id="pokupka" class="band band--surface buy" aria-labelledby="pokupka-title">
+  <div class="container buy__grid">
+    <div class="buy__text">
+      <h2 id="pokupka-title">Перевірка авто перед купівлею</h2>
+      <p class="buy__lead">Купуєте вживане авто? Привезіть його на одну з двох СТО до угоди, а не після неї.</p>
+      <p class="buy__future"><FutureLink align="start">Авто в продажу від SMOTOR</FutureLink></p>
+    </div>
+
+    <div class="buy__offer">
+      <p class="buy__price"><span class="buy__from">від</span> <span class="num">1400</span> <span class="buy__unit">грн</span></p>
+      <p class="buy__caption">передпродажна діагностика</p>
+      <p class="buy__list-title">Що можна замовити перед угодою</p>
+      <ul class="buy__list">
+        <li>Передпродажна діагностика</li>
+        <li>Ендоскопія двигуна</li>
+        <li>Комп'ютерна діагностика</li>
+      </ul>
+      <ul class="buy__calls" aria-label="Записатися на перевірку">
+        {stations.map((s) => <li><StationButton station={s} tone="brand" /></li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .buy__grid { display: grid; gap: var(--space-xl); }
+  .buy__text { display: grid; gap: var(--space-md); align-content: start; }
+  .buy__lead { font-size: var(--text-lead); line-height: 1.4; max-width: 34ch; }
+  .buy__future { color: var(--color-muted); margin-top: var(--space-xs); }
+
+  .buy__offer { display: grid; gap: var(--space-xs); }
+  .buy__price { color: var(--color-brand); line-height: 0.9; }
+  .buy__price .num { font: 800 var(--text-xl)/0.9 var(--font-display); letter-spacing: -0.03em; }
+  .buy__from, .buy__unit { font: 800 var(--text-lead)/1 var(--font-display); }
+  .buy__caption { font-weight: 600; margin-bottom: var(--space-md); }
+  .buy__list-title { font-size: var(--text-sm); color: var(--color-muted); }
+  .buy__list { display: grid; margin-bottom: var(--space-lg); }
+  .buy__list li { padding-block: var(--space-sm); border-bottom: 1px solid var(--color-rule); }
+  .buy__list li:first-child { border-top: 1px solid var(--color-rule); }
+  .buy__calls { display: grid; gap: var(--space-xs); }
+
+  @media (min-width: 48rem) {
+    .buy__calls { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (min-width: 64rem) {
+    .buy__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); align-items: start; }
+    .buy__text { grid-column: 1 / span 6; }
+    .buy__offer { grid-column: 7 / span 6; }
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+import Logo from "./Logo.astro";
+import FutureLink from "./FutureLink.astro";
+import { stations, socials, email, qualityEmail } from "../data/smotor";
+const future = ["Послуги", "Марки", "Автопродаж", "Запчастини", "Статті", "Про нас"];
+---
+<footer class="footer band--ink" data-rec="U-R008">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <Logo />
+      <p class="footer__line">Сервіс Kia, Hyundai, SsangYong, Toyota та Lexus.</p>
+    </div>
+
+    <ul class="footer__stations" aria-label="СТО">
+      {stations.map((s) => (
+        <li>
+          <span class="footer__city">{s.city}</span>
+          <span class="footer__addr">{s.address}</span>
+          <a class="link footer__phone" href={`tel:${s.phone}`} data-event="call" data-station={s.id}>{s.phoneText}</a>
+        </li>
+      ))}
+    </ul>
+
+    <nav class="footer__nav" aria-label="Розділи повного сайту">
+      <ul>
+        {future.map((f) => <li><FutureLink align="start">{f}</FutureLink></li>)}
+      </ul>
+    </nav>
+
+    <div class="footer__social">
+      <ul aria-label="SMOTOR у соцмережах" data-rec="P-R002,S-R013">
+        {socials.map((s) => <li><a class="link" href={s.url} target="_blank" rel="noopener">{s.name}</a></li>)}
+      </ul>
+      <p class="footer__mail"><a class="link" href={`mailto:${email}`} data-event="email">{email}</a></p>
+      <p class="footer__mail">Відділ якості: <a class="link" href={`mailto:${qualityEmail}`} data-event="email">{qualityEmail}</a></p>
+    </div>
+
+    <div class="footer__legal">
+      <p>© SMOTOR, 2026</p>
+      <FutureLink align="start">Політика конфіденційності</FutureLink>
+      <FutureLink align="end">Версія російською</FutureLink>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer { padding-block: var(--space-2xl) var(--space-xl); font-size: var(--text-sm); color: var(--color-muted-on-ink); }
+  .footer__grid { display: grid; gap: var(--space-xl); }
+  .footer__brand { display: grid; gap: var(--space-md); justify-items: start; align-content: start; }
+  .footer__line { color: var(--color-paper); max-width: 28ch; }
+  .footer__stations { display: grid; gap: var(--space-lg); }
+  .footer__stations li { display: grid; gap: var(--space-3xs); }
+  .footer__city { color: var(--color-paper); font-weight: 600; }
+  .footer__phone, .footer a.link { color: var(--color-paper); display: inline-flex; align-items: center; min-height: 2.75rem; justify-self: start; }
+  .footer a.link:hover { color: var(--color-action); }
+  .footer__nav ul { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-xs) var(--space-lg); }
+  .footer__nav li { min-height: 2.75rem; display: flex; align-items: center; }
+  .footer__social ul { display: flex; flex-wrap: wrap; gap: 0 var(--space-lg); }
+  .footer__mail { overflow-wrap: anywhere; }
+  .footer__legal { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-xs) var(--space-lg); padding-top: var(--space-lg); border-top: 1px solid var(--color-rule-dark); }
+  .footer__legal > :global(*) { min-height: 2.75rem; display: inline-flex; align-items: center; }
+
+  @media (min-width: 64rem) {
+    .footer__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); }
+    .footer__brand { grid-column: 1 / span 3; }
+    .footer__stations { grid-column: 4 / span 3; }
+    .footer__nav { grid-column: 7 / span 3; }
+    .footer__social { grid-column: 10 / span 3; }
+    .footer__legal { grid-column: 1 / -1; }
+  }
+</style>

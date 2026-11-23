@@ -1,0 +1,43 @@
+---
+import { stations, telegram } from "../data/smotor";
+// Phone bar under 48rem: one labelled panel instead of anonymous floating buttons (U-R002).
+// Without script it is always shown; with script it slides in once the hero call buttons leave the screen.
+---
+<nav class="callbar band--ink" aria-label="Зв'язок із СТО" data-callbar data-rec="U-R002">
+  <ul class="callbar__list">
+    {stations.map((s) => (
+      <li><a class="callbar__item" href={`tel:${s.phone}`} data-event="call" data-station={s.id}><span class="callbar__small">Подзвонити</span>{s.city}</a></li>
+    ))}
+    <li>
+      <details class="callbar__more" data-dd>
+        <summary class="callbar__item"><span class="callbar__small">Viber, Telegram</span>Написати</summary>
+        <ul class="callbar__menu">
+          <li><a href={stations[0].viber} data-event="viber" data-station="kyiv">Viber Київ</a></li>
+          <li><a href={stations[1].viber} data-event="viber" data-station="vyshneve">Viber Вишневе</a></li>
+          <li><a href={telegram} target="_blank" rel="noopener" data-event="telegram">Telegram</a></li>
+        </ul>
+      </details>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .callbar { position: fixed; left: 0; right: 0; bottom: 0; z-index: var(--z-sticky); padding-bottom: env(safe-area-inset-bottom); border-top: 1px solid var(--color-rule-dark); transition: transform var(--dur-bar) var(--ease-out); }
+  :global(.js) .callbar:not(.is-shown) { transform: translateY(110%); }
+  .callbar__list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .callbar__list > li + li { border-left: 1px solid var(--color-rule-dark); }
+  .callbar__item { display: grid; place-content: center; text-align: center; height: var(--callbar-h); padding: 0 var(--space-xs); color: var(--color-paper); font: 800 var(--text-md)/1.15 var(--font-display); text-decoration: none; cursor: pointer; list-style: none; -webkit-tap-highlight-color: transparent; transition: background-color var(--dur-press) var(--ease-out); }
+  .callbar__item::-webkit-details-marker { display: none; }
+  .callbar__item:hover, .callbar__item:active { background: var(--color-rule-dark); }
+  .callbar__small { font: 400 0.75rem/1.2 var(--font-body); color: var(--color-muted-on-ink); }
+  .callbar__more[open] .callbar__item { background: var(--color-rule-dark); }
+  .callbar__menu { position: absolute; right: var(--space-xs); bottom: calc(100% + var(--space-xs)); min-width: 12rem; padding: var(--space-xs); background: var(--color-paper); border-radius: var(--radius); box-shadow: 0 1px 2px color-mix(in srgb, var(--color-ink) 8%, transparent); --focus: var(--color-brand); }
+  .callbar__menu a { display: flex; align-items: center; min-height: 3rem; padding: 0 var(--space-sm); color: var(--color-ink); text-decoration: none; font-weight: 600; border-radius: var(--radius); }
+  .callbar__menu a:hover { background: var(--color-surface); color: var(--color-brand); }
+  @media (min-width: 48rem) {
+    .callbar { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .callbar { transition: none; }
+  }
+</style>

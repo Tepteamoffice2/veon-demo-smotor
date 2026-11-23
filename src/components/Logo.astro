@@ -1,0 +1,13 @@
+---
+// Text wordmark in the oval. The client's original logo file is not in the project (audit/ has no file),
+// so the demo sets SMOTOR in type inside the brand oval instead of redrawing a look-alike mark.
+interface Props { class?: string; }
+const { class: cls } = Astro.props;
+---
+<a class:list={["logo", cls]} href="#top" aria-label="SMOTOR, на початок сторінки"><span class="logo__word" aria-hidden="true">SMOTOR</span></a>
+<style>
+  .logo { display: inline-grid; place-items: center; flex-shrink: 0; width: 7rem; height: 3rem; border-radius: 50%; background: var(--color-brand); color: var(--color-paper); text-decoration: none; transition: background-color var(--dur-press) var(--ease-out); }
+  .logo:hover { background: var(--color-brand-hover); }
+  .logo__word { font: 800 1.125rem/1 var(--font-display); letter-spacing: 0; }
+  .logo:focus-visible { outline-offset: 3px; }
+</style>

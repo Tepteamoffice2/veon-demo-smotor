@@ -1,0 +1,81 @@
+---
+import StationButton from "./StationButton.astro";
+import { stations, telegram, hours } from "../data/smotor";
+// H1 = veon-concept h1 exactly: «Сервіс Kia, Hyundai, SsangYong, Toyota та Lexus у Києві та Вишневому».
+const lines = ["Kia,", "Hyundai,", "SsangYong,", "Toyota", "та Lexus"];
+---
+<section id="top" class="hero band--brand" aria-labelledby="hero-title" data-rec="U-R001,U-R003,U-R006,U-R008,P-R001,P-R003,A-MR006,A-MR007,G-R003,G-R004">
+  <div class="container hero__grid">
+    <h1 id="hero-title" class="hero__title">
+      <span class="hero__small">Сервіс</span>{" "}
+      <span class="hero__marques">
+        {lines.map((l, i) => <><span class="hero__marque" style={`--i:${i}`}>{l}</span>{" "}</>)}
+      </span>
+      <span class="hero__small">у Києві та Вишневому</span>
+    </h1>
+
+    <div class="hero__panel" data-hero-actions>
+      <p class="hero__lead">Спеціалізований сервіс корейських і японських авто. Оберіть свою СТО й подзвоніть.</p>
+      <ul class="hero__stations" aria-label="Подзвонити на СТО">
+        {stations.map((s) => <li><StationButton station={s} tone="action" /></li>)}
+      </ul>
+      <p class="hero__msg">
+        <span class="hero__msg-label">Написати:</span>
+        <a class="link" href={stations[0].viber} data-event="viber" data-station="kyiv">Viber Київ</a>
+        <a class="link" href={stations[1].viber} data-event="viber" data-station="vyshneve">Viber Вишневе</a>
+        <a class="link" href={telegram} target="_blank" rel="noopener" data-event="telegram">Telegram</a>
+      </p>
+      <ul class="hero__trust" data-rec="U-R005">
+        <li><strong>12 місяців гарантії</strong> на роботи</li>
+        <li><span class="nowrap">{hours.weekdays},</span> <span class="nowrap">{hours.saturday}</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--space-lg) var(--space-xl); }
+  .hero__grid { display: grid; gap: var(--space-lg); }
+  .hero__title { display: flex; flex-direction: column; gap: var(--space-2xs); max-width: none; overflow-wrap: break-word; min-width: 0; }
+  .hero__small { font-size: var(--text-lead); line-height: var(--lh-head); letter-spacing: -0.01em; }
+  .hero__marques { display: flex; flex-direction: column; font-size: var(--text-marques); line-height: var(--lh-marques); letter-spacing: -0.03em; margin-block: var(--space-2xs) var(--space-xs); }
+  .hero__marque { display: block; white-space: nowrap; animation: marque-rise 520ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 60ms); }
+  @keyframes marque-rise { from { transform: translateY(0.12em); } to { transform: none; } }
+
+  .hero__panel { display: grid; gap: var(--space-md); align-content: end; min-width: 0; }
+  .hero__lead { font-size: var(--text-md); color: var(--color-muted-on-brand); max-width: 36ch; }
+  .hero__stations { display: grid; gap: var(--space-xs); }
+  .hero__msg { display: flex; flex-wrap: wrap; align-items: center; column-gap: var(--space-md); font-size: var(--text-md); }
+  .hero__msg-label { flex-basis: 100%; font-size: var(--text-sm); color: var(--color-muted-on-brand); }
+  .hero__msg .link { display: inline-flex; align-items: center; min-height: 2.75rem; color: var(--color-paper); }
+  .hero__msg .link:hover { color: var(--color-action); }
+  .hero__trust { display: grid; gap: var(--space-2xs); font-size: var(--text-sm); color: var(--color-muted-on-brand); padding-top: var(--space-sm); border-top: 1px solid var(--color-rule-brand); }
+  .hero__trust strong { color: var(--color-paper); font-weight: 600; }
+
+  @media (min-width: 30rem) {
+    .hero__small { font-size: var(--text-section); }
+  }
+  @media (min-width: 48rem) {
+    .hero { padding-block: var(--space-2xl); }
+    .hero__stations { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .hero__marque { animation-name: marque-rise-lg; }
+    @keyframes marque-rise-lg { from { transform: translateY(0.25em); } to { transform: none; } }
+  }
+  @media (min-width: 60rem) {
+    .hero { min-height: min(calc(100svh - var(--header-h)), 60rem); display: grid; align-items: end; padding-block: var(--space-xl) var(--space-2xl); }
+    .hero__grid { grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gap-columns); align-items: end; }
+    .hero__title { grid-column: 1 / span 7; }
+    .hero__marques { font-size: clamp(3.25rem, min(8.5vw, 13.5svh), 8.5rem); }
+    .hero__panel { grid-column: 8 / span 5; }
+    .hero__stations { grid-template-columns: minmax(0, 1fr); }
+  }
+  @media (min-width: 75rem) {
+    .hero__title { grid-column: 1 / span 8; }
+    .hero__marques { font-size: clamp(3.25rem, min(9vw, 13.5svh), 8.5rem); }
+    .hero__panel { grid-column: 9 / span 4; }
+    .hero__lead { font-size: var(--text-lead); line-height: 1.35; color: var(--color-paper); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__marque { animation: none; }
+  }
+</style>

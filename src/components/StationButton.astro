@@ -1,0 +1,11 @@
+---
+import Icon from "./Icon.astro";
+import type { Station } from "../data/smotor";
+interface Props { station: Station; tone?: "action" | "brand"; short?: boolean; class?: string; }
+const { station, tone = "action", short = false, class: cls } = Astro.props;
+---
+<a class:list={["station-btn", `station-btn--${tone}`, cls]} href={`tel:${station.phone}`} data-event="call" data-station={station.id}>
+  <span class="station-btn__place">{short ? station.city : `${station.city}, ${station.street}`}</span>
+  <span class="station-btn__phone">{station.phoneText}</span>
+  <Icon name="phone" />
+</a>
